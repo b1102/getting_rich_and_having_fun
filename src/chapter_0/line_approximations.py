@@ -5,7 +5,7 @@ import os
 
 from utils.utils import train_data, plot_results
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 
 # %%
 name = "Reference"
@@ -14,10 +14,12 @@ batch_size = 128
 neurons_number = 64
 epochs = 20
 optimize = 'Adam'
+function_to_approximate = lambda x: x
 
 # %%
 
 # build the model
+print("Model definition")
 model = tf.keras.models.Sequential()
 model.add(keras.layers.Dense(neurons_number, input_shape=(1,), name='input', activation=activation))
 model.add(keras.layers.Dense(neurons_number, activation=activation))
@@ -28,11 +30,13 @@ model.add(keras.layers.Dense(neurons_number, activation=activation))
 # model.add(keras.layers.Dropout(0.2))
 model.add(keras.layers.Dense(1, name='output'))
 # summary of the model
-model.summary()
+print(model.summary())
+print("Model defined")
+
 model.compile(optimizer=optimize, loss='mean_squared_error', metrics=['mse', 'mean_absolute_error'])
 
 # %%
-X_train, Y_train = train_data(start=0, end=0.8, number=10000)
+X_train, Y_train = train_data(start=0, end=0.8, number=1000000, f=function_to_approximate)
 model.fit(X_train, Y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_split=0.2)
 
 # %%

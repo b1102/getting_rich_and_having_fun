@@ -6,7 +6,7 @@ import os
 
 from utils.utils import train_data, plot_results
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 
 # %%
 name = "sin(12 * x)"
